@@ -1,3 +1,4 @@
+# 놀멍봅서 서버 진입점 — FastAPI 앱을 만들고 각 라우터를 붙인다.
 import traceback
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse

@@ -8,6 +8,9 @@ struct JejuFolkloreApp: App {
         // 시스템 내비게이션 바·리스트 외형을 팔레트에 맞춘다.
         PixelChrome.apply()
 
+        // 이 기기에서 처음 켰으면 운영자에게 알린다 (회원가입이 없어서 그 자리를 대신한다).
+        AppEventReporter.firstOpenIfNeeded()
+
         // Google Maps API 키는 환경변수 GOOGLE_MAPS_API_KEY 로 주입한다.
         // Xcode > Edit Scheme > Run > Arguments > Environment Variables 에서 설정하거나,
         // Info.plist 의 GOOGLE_MAPS_API_KEY 키를 사용한다.

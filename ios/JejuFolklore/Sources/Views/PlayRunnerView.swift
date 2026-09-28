@@ -796,6 +796,7 @@ final class RunnerViewModel: ObservableObject {
                 ?? max(flat.count - 1, 0)
         } else {
             self.progress = PlayProgress(play: play)
+            AppEventReporter.playStarted(playId: play.id)
         }
     }
 
@@ -992,6 +993,7 @@ final class RunnerViewModel: ObservableObject {
         progress.finalCleared = true
         // CLEAR 기록을 남긴다 — 홈 카드가 「다시 하기」로 바뀌는 근거다.
         PlayProgressStore.shared.save(progress)
+        AppEventReporter.playCleared(progress)
         phase = .clear
     }
 

@@ -4,8 +4,9 @@
   놀멍봅서 개인정보 매니페스트 (2026-09-11).
 
   추적 없음. 광고 식별자·기기 식별자를 쓰지 않는다.
-  수집하는 것은 「현장에서 찾을 수 없어요」 신고의 사유·메모(사용자 콘텐츠) 하나뿐이고,
-  기기 식별자 없이 보내므로 사용자와 연결되지 않는다 (backend/static/privacy.html §4).
+  수집하는 것은 둘이고, 모두 기기 식별자 없이 보내므로 사용자와 연결되지 않는다 (backend/static/privacy.html §4).
+    - 「현장에서 찾을 수 없어요」 신고의 사유·메모 → 사용자 콘텐츠
+    - 앱 첫 실행 · PLAY 시작 · CLEAR 알림 (어느 PLAY, 걸린 분, 건너뛴 미션 수) → 제품 상호작용 (2026-09-28)
 
   사유 필요 API: UserDefaults — 앱 자신의 설정(선택한 탭·소리 끄기·진행 표시)만 읽고 쓴다 → CA92.1
 -->
@@ -27,6 +28,18 @@
 			<key>NSPrivacyCollectedDataTypePurposes</key>
 			<array>
 				<string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSPrivacyCollectedDataType</key>
+			<string>NSPrivacyCollectedDataTypeProductInteraction</string>
+			<key>NSPrivacyCollectedDataTypeLinked</key>
+			<false/>
+			<key>NSPrivacyCollectedDataTypeTracking</key>
+			<false/>
+			<key>NSPrivacyCollectedDataTypePurposes</key>
+			<array>
+				<string>NSPrivacyCollectedDataTypePurposeAnalytics</string>
 			</array>
 		</dict>
 	</array>

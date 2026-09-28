@@ -26,7 +26,7 @@ import { useAppNavigation, usePlayRunnerParams } from '../../app/routes';
 import { approxDistanceText, distanceMeters } from '../../lib/geo';
 import { useUserLocation, type UserLocation } from '../../lib/location';
 import { useResource } from '../../lib/resource';
-import { missionReportQueue, playProgressStore } from '../../stores';
+import { appEvents, isFinished, missionReportQueue, playProgressStore } from '../../stores';
 import { Icon, PixelColor, PixelDialog, PixelFont, PixelSpacing, PixelSpinner, PixelStyledButton } from '../../ui';
 import { play as playLine, prefetchUpcoming, setMuted, stop as stopAudio, unlockWithGesture, useLineAudio, useMuted } from './lineAudio';
 import { MissionReportSheet } from './MissionReportSheet';
@@ -123,6 +123,18 @@ function Runner({ play }: { play: Play }) {
   useEffect(() => {
     void missionReportQueue.flush();
   }, []);
+  // 처음부터 시작한 판이면 운영자에게 알린다 — 「이어서 하기」는 세지 않는다.
+  // (StrictMode 가 effect 를 두 번 돌려도 ref 는 남아 한 번만 보낸다)
+  const [startedFresh] = useState(() => {
+    const saved = playProgressStore.load(play.id);
+    return !saved || isFinished(saved);
+  });
+  const startReportedRef = useRef(false);
+  useEffect(() => {
+    if (!startedFresh || startReportedRef.current) return;
+    startReportedRef.current = true;
+    appEvents.playStarted(play.id);
+  }, [startedFresh, play.id]);
   // 화면을 떠나면 소리를 끊는다.
   useEffect(() => () => stopAudio(), []);
 
@@ -154,6 +166,7 @@ function Runner({ play }: { play: Play }) {
       let next = reduceRunner(play, prev, action);
       if (next === prev) return;
       if (next.progress !== prev.progress) next = { ...next, progress: playProgressStore.save(next.progress) };
+      if (next.progress.finalCleared && !prev.progress.finalCleared) appEvents.playCleared(next.progress);
       stateRef.current = next;
       setState(next);
       // 말이 바뀌면 **탭 안에서** 다음 줄을 튼다 — 토스 WebView 는 탭 없이 소리를 못 낸다.

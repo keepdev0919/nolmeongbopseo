@@ -5,7 +5,7 @@ import { SafeArea } from '@apps-in-toss/web-framework';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './app/App';
-import { hydrateStores } from './stores';
+import { appEvents, hydrateStores } from './stores';
 
 /** 하단 safe area 를 CSS 변수로 (`--px-safe-bottom` 이 최소 34px 와 함께 쓴다). */
 function wireSafeArea() {
@@ -63,6 +63,8 @@ async function boot() {
   // 저장된 진행·담은 코스를 먼저 올린다. 저장소가 느려도 3초 뒤엔 화면을 그린다
   // (늦게 도착한 값은 훅이 다시 그린다).
   await Promise.race([hydrateStores(), new Promise((r) => setTimeout(r, 3000))]);
+  // 이 기기에서 처음 켰으면 운영자에게 알린다 (회원가입이 없어서 그 자리를 대신한다). 기다리지 않는다.
+  void appEvents.firstOpenIfNeeded();
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <App />

@@ -1,4 +1,5 @@
 # 놀멍봅서 서버 진입점 — FastAPI 앱을 만들고 각 라우터를 붙인다.
+import asyncio
 import traceback
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
@@ -7,7 +8,8 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
-from routers import course, tts, tourist, place, home, play, report, legal, event
+from routers import course, tts, tourist, place, home, play, report, legal
+from services import visit_notify
 
 limiter = Limiter(key_func=get_remote_address)
 
@@ -29,8 +31,19 @@ app.include_router(place.router)
 app.include_router(home.router)
 app.include_router(play.router)
 app.include_router(report.router)
-app.include_router(event.router)
 app.include_router(legal.router)
+
+
+@app.middleware("http")
+async def notify_operator(request: Request, call_next):
+    """앱이 서버를 부르는 모습을 보고 운영자 텔레그램으로 알린다 (services/visit_notify.py).
+    응답은 먼저 돌려주고, 알림은 따로 돈다 — 느리거나 실패해도 앱은 모른다."""
+    response = await call_next(request)
+    if response.status_code < 400:
+        asyncio.get_running_loop().run_in_executor(
+            None, visit_notify.observe, request.method, request.url.path, request.url.query,
+        )
+    return response
 
 
 @app.exception_handler(Exception)

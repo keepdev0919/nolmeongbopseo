@@ -153,21 +153,6 @@ export const ReportAPI = {
   },
 };
 
-// ═══════════════════════════════ 운영자 알림 ═══════════════════════════════
-
-/** `POST /event` 본문. 기기 ID·위치는 싣지 않는다 (backend/routers/event.py). */
-export type AppEventBody =
-  | { type: 'first_open'; platform: 'toss' }
-  | { type: 'play_start'; platform: 'toss'; playId: string }
-  | { type: 'play_clear'; platform: 'toss'; playId: string; minutes: number; skipped: number };
-
-export const EventAPI = {
-  /** 앱 첫 실행 · PLAY 시작 · CLEAR 를 서버에 알린다 → 202 { ok }. 서버가 운영자 텔레그램으로 넘긴다. */
-  send(body: AppEventBody, opts?: RequestOptions): Promise<{ ok: boolean }> {
-    return apiPost<{ ok: boolean }>('/event', body, opts);
-  },
-};
-
 // ═══════════════════════════════ 음성 (TTS) ═══════════════════════════════
 
 /**

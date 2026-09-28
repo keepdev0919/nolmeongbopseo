@@ -8,9 +8,8 @@
  * 저장은 앱인토스 Storage SDK (`kvToss.ts`). 테스트는 각 파일의 `create…Store(createMemoryBackend())`.
  */
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
-import { EventAPI, ReportAPI } from '../api/endpoints';
+import { ReportAPI } from '../api/endpoints';
 import type { Course } from '../api/types';
-import { createAppEventReporter } from './appEvents';
 import { appStorage } from './kvToss';
 import { createMissionReportQueue } from './missionReports';
 import { createPlayProgressStore, type PlayProgress, type ProgressMap } from './playProgress';
@@ -20,7 +19,6 @@ import { courseIdentityKey, createSavedCourseStore, type SavedCourse } from './s
 export * from './playProgress';
 export * from './savedCourses';
 export * from './missionReports';
-export * from './appEvents';
 export type { AppTab } from './preferences';
 export type { KeyValueBackend } from './kv';
 
@@ -39,15 +37,6 @@ export const missionReportQueue = createMissionReportQueue(appStorage, async (r)
   }
 });
 
-export const appEvents = createAppEventReporter(appStorage, async (body) => {
-  try {
-    await EventAPI.send(body);
-    return true;
-  } catch {
-    return false;
-  }
-});
-
 /** 앱 시작 때 한 번. 모든 저장값을 메모리로 올린다. */
 export async function hydrateStores(): Promise<void> {
   await Promise.all([
@@ -56,7 +45,6 @@ export async function hydrateStores(): Promise<void> {
     voiceMutedStore.hydrate(),
     selectedTabStore.hydrate(),
     missionReportQueue.hydrate(),
-    appEvents.hydrate(),
   ]);
 }
 

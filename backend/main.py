@@ -7,7 +7,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
-from routers import course, tts, tourist, place, home, play, report, legal
+from routers import course, tts, tourist, place, home, play, report, legal, event
 
 limiter = Limiter(key_func=get_remote_address)
 
@@ -29,6 +29,7 @@ app.include_router(place.router)
 app.include_router(home.router)
 app.include_router(play.router)
 app.include_router(report.router)
+app.include_router(event.router)
 app.include_router(legal.router)
 
 

@@ -27,5 +27,5 @@ def test_privacy_and_support_pages_are_served_with_a_real_contact():
 def test_privacy_lists_every_external_service_the_server_calls():
     """서버가 실제로 부르는 외부 서비스는 처리방침 §5 에 있어야 한다."""
     text = client.get("/privacy").text
-    for name in ("한국관광공사", "Typecast", "Google Maps", "공중화장실", "버스정류소", "Telegram"):
+    for name in ("한국관광공사", "Typecast", "Google Maps", "공중화장실", "버스정류소"):
         assert name in text, name

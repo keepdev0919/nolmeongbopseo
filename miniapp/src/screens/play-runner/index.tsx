@@ -24,9 +24,10 @@ import { PlayAPI, pointCoordinate, type MissionHint, type Play, type PlayPoint }
 import { useBackHandler } from '../../app/backHandler';
 import { useAppNavigation, usePlayRunnerParams } from '../../app/routes';
 import { approxDistanceText, distanceMeters } from '../../lib/geo';
+import { logEvent } from '../../lib/analytics';
 import { useUserLocation, type UserLocation } from '../../lib/location';
 import { useResource } from '../../lib/resource';
-import { missionReportQueue, playProgressStore } from '../../stores';
+import { isFinished, missionReportQueue, playProgressStore } from '../../stores';
 import { Icon, PixelColor, PixelDialog, PixelFont, PixelSpacing, PixelSpinner, PixelStyledButton } from '../../ui';
 import { play as playLine, prefetchUpcoming, setMuted, stop as stopAudio, unlockWithGesture, useLineAudio, useMuted } from './lineAudio';
 import { MissionReportSheet } from './MissionReportSheet';
@@ -123,6 +124,18 @@ function Runner({ play }: { play: Play }) {
   useEffect(() => {
     void missionReportQueue.flush();
   }, []);
+  // 처음부터 시작한 판만 play_start 로 센다 — 「이어서 하기」는 새 시작이 아니다.
+  // (StrictMode 가 effect 를 두 번 돌려도 ref 는 남아 한 번만 보낸다)
+  const [startedFresh] = useState(() => {
+    const saved = playProgressStore.load(play.id);
+    return !saved || isFinished(saved);
+  });
+  const startLoggedRef = useRef(false);
+  useEffect(() => {
+    if (!startedFresh || startLoggedRef.current) return;
+    startLoggedRef.current = true;
+    logEvent('play_start', { play_id: play.id });
+  }, [startedFresh, play.id]);
   // 화면을 떠나면 소리를 끊는다.
   useEffect(() => () => stopAudio(), []);
 
@@ -154,6 +167,13 @@ function Runner({ play }: { play: Play }) {
       let next = reduceRunner(play, prev, action);
       if (next === prev) return;
       if (next.progress !== prev.progress) next = { ...next, progress: playProgressStore.save(next.progress) };
+      if (next.progress.finalCleared && !prev.progress.finalCleared) {
+        logEvent('play_clear', {
+          play_id: play.id,
+          minutes: Math.max(0, Math.floor((Date.now() - next.progress.startedAt) / 60_000)),
+          skipped: next.progress.skippedMissionIds.length,
+        });
+      }
       stateRef.current = next;
       setState(next);
       // 말이 바뀌면 **탭 안에서** 다음 줄을 튼다 — 토스 WebView 는 탭 없이 소리를 못 낸다.

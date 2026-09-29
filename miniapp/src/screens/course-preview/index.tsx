@@ -15,6 +15,7 @@ import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router';
 import { CourseAPI, courseHeadline, courseRegion, type Course, type CoursePlace } from '../../api';
 import { useAppNavigation, useCoursePreviewParams, useSavedCourseParams } from '../../app/routes';
+import { logEvent } from '../../lib/analytics';
 import { boundsOf, JEJU_CENTER, regionColors, type LatLngBounds } from '../../lib/region';
 import { useResource } from '../../lib/resource';
 import {
@@ -298,6 +299,7 @@ function CoursePreviewView({
     }
     try {
       const result = await savedCourseStore.save(course);
+      if (result !== 'already') logEvent('course_save', { region: courseRegion(course), days: course.durationDays });
       toast.show(result === 'already' ? '이미 담아 둔 코스예요' : '코스가 저장됐어요!');
     } catch {
       // ⚠️ 실패했는데 「저장됐어요」라고 말하지 않는다. 저장소가 담을 뻔한 것도 도로 뺀다.

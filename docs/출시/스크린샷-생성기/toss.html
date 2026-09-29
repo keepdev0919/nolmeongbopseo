@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>놀멍봅서 · 토스 미니앱 등록 이미지</title>
+<!--
+  토스 미니앱(앱인토스) 등록 이미지 합성 페이지 — index.html(앱스토어)을 토스 규격에 맞게 고친 것.
+  - 세로 스크린샷 636×1048 6장 + 가로 썸네일 1932×828 1장. render_toss.py 가 찍는다.
+  - 캡처(shots-toss/)는 iOS 가 아니라 **미니앱 화면**이다 — 지도가 iOS(구글)와 달라서 (2026-09-29).
+  - 앱스토어보다 덜 길쭉해서 폰을 작게 두고 문구와 겹치지 않게 했다.
+  색은 ios/.../PixelColor.swift, 글꼴은 앱과 같은 Galmuri11 이다.
+-->
+<style>
+  @font-face { font-family: "Galmuri"; src: url("fonts/Galmuri11-Bold.ttf"); font-weight: 700; }
+  @font-face { font-family: "Galmuri"; src: url("fonts/Galmuri11.ttf"); font-weight: 400; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #e5e7eb; font-family: "Galmuri", sans-serif; overflow-x: hidden; }
+
+  /* 미리보기 격자 */
+  #grid { display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; }
+  .card { flex: none; overflow: hidden; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,.15); background: #fff; }
+  .card .cap { font: 700 12px/1 system-ui; padding: 8px 10px; color: #374151; }
+  .card .stage { position: relative; overflow: hidden; }
+  .card .stage > .slide { transform-origin: 0 0; position: absolute; left: 0; top: 0; }
+
+  /* 한 장 — 크기는 JS 가 --u(= 캔버스 폭의 1%) 로 넣는다 */
+  .slide { position: relative; overflow: hidden; }
+  .slide .deco { position: absolute; image-rendering: pixelated; z-index: 1; }
+  .caption { position: absolute; left: 0; right: 0; top: calc(var(--u) * 9); padding: 0 calc(var(--u) * 6); z-index: 3; }
+  .caption.center { text-align: center; }
+  .caption.right { text-align: right; }
+  .caption.bottom { top: auto; bottom: calc(var(--u) * 12); }
+  .chip {
+    display: inline-block; font-weight: 700; font-size: calc(var(--u) * 3.6); line-height: 1;
+    padding: calc(var(--u) * 1.4) calc(var(--u) * 2.2);
+    border: calc(var(--u) * 0.55) solid #181A2A; background: #FFFFFF; color: #006D39;
+    box-shadow: calc(var(--u) * 0.9) calc(var(--u) * 0.9) 0 #181A2A;
+    margin-bottom: calc(var(--u) * 5);
+  }
+  .headline { font-weight: 700; font-size: calc(var(--u) * 10); line-height: 1.22; letter-spacing: -0.01em; color: var(--fg); }
+  /* 강조 단어: 진한 초록 + 밝은 초록 밑줄 (2026-09-11 결정 — 검정 그림자는 보기 불편했다) */
+  .headline .ac { color: #006D39;
+    background: linear-gradient(transparent 62%, #38CC77 62%, #38CC77 88%, transparent 88%); }
+
+  .brand { display: inline-flex; align-items: center; gap: calc(var(--u) * 3); margin-bottom: calc(var(--u) * 5); }
+  .brand img { width: calc(var(--u) * 13); height: calc(var(--u) * 13); border-radius: calc(var(--u) * 2.9);
+    box-shadow: calc(var(--u) * 0.9) calc(var(--u) * 0.9) 0 #181A2A; }
+  .brand span { font-weight: 700; font-size: calc(var(--u) * 6); color: var(--fg); }
+
+  /* 아이폰 틀 — mockup.png 의 화면 자리를 미리 재 둔 값 (1022×2082 중 52,46 에서 918×1990) */
+  .phone-layer { position: absolute; inset: 0; z-index: 2; }
+  .phone { position: absolute; aspect-ratio: 1022 / 2082; width: calc(var(--u) * 86); }
+  .phone > img.frame { display: block; width: 100%; height: 100%; }
+  .phone .screen { position: absolute; z-index: 10; overflow: hidden;
+    left: 5.088%; top: 2.209%; width: 89.824%; height: 95.581%; border-radius: 13.725% / 6.332%; }
+  .phone .screen img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+</style>
+</head>
+<body>
+<div id="grid"></div>
+<script>
+const P = { // PixelColor.swift (라이트)
+  bg: "#FBF8FF", surfaceMid: "#EDECFF", ink: "#181A2A", inkDeep: "#12141F", inkSurface: "#22243A",
+  primary: "#006D39", primaryDeep: "#005129", primaryBright: "#38CC77",
+  secondary: "#0062A2", secondaryDeep: "#003E69", secondaryBright: "#54ABFD",
+  gold: "#FFC61A", goldLight: "#FFE085", white: "#FFFFFF",
+};
+
+// ── 픽셀 장식 (SVG, 네모 칸으로 그린다) ────────────────────────────
+function pixelArt(rows, colors) {
+  const h = rows.length, w = Math.max(...rows.map(r => r.length));
+  let rects = "";
+  rows.forEach((r, y) => [...r].forEach((c, x) => {
+    if (colors[c]) rects += `<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${colors[c]}"/>`;
+  }));
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" shape-rendering="crispEdges">${rects}</svg>`;
+  return { src: "data:image/svg+xml;utf8," + encodeURIComponent(svg), ratio: w / h };
+}
+const CLOUD = [
+  "....oooo........",
+  "...owwwwo..ooo..",
+  "..owwwwwwoowwwo.",
+  ".owwwwwwwwwwwwwo",
+  "owwwwwwwwwwwwwwo",
+  "osssssssssssssso",
+  ".oooooooooooooo.",
+];
+const cloud = () => pixelArt(CLOUD, { o: "#C9C8E8", w: "#FFFFFF", s: "#E6E6FD" });
+
+// ── 6장 ─────────────────────────────────────────────────────────────
+// 배경·강조색은 8장 모두 같다 (2026-09-11 결정: 장마다 색이 달라 한 세트로 안 보였다).
+// 변화는 폰 배치로만 준다 — 아래에서(bottom) · 기울여서(tilt) · 위에서(top).
+// 문구: {중괄호} 가 강조색. 한 장에 메시지 하나.
+// deco: [x %, y (캔버스 폭 1% 단위), 폭] — 구름은 폰 뒤로 깔린다.
+const THEME = {
+  bg: `linear-gradient(180deg, ${P.bg} 0%, ${P.surfaceMid} 100%)`,
+  fg: P.ink, shadow: P.ink,
+};
+const SLIDES = [
+  { id: "01-플레이", shot: "shots-toss/home.png", phone: "bottom", drop: 20, align: "center", brand: true,
+    lines: ["관광지를", "{플레이}하세요"],
+    deco: [[3, 70, 15], [82, 66, 16]] },
+  { id: "02-퀘스트", shot: "shots-toss/runner.png", phone: "tilt", tilt: 7, x: 54, align: "left", chip: "현장 미션",
+    lines: ["도착하면", "{퀘스트}가 시작돼요"],
+    deco: [[80, 8, 15], [2, 70, 13]] },
+  { id: "03-한눈에", shot: "shots-toss/playdetail.png", phone: "top", align: "center", chip: "퀘스트",
+    lines: ["무엇을 할지", "{한눈에} 보고 출발"],
+    deco: [[2, 120, 14], [83, 118, 15]] },
+  { id: "04-어디갈지", shot: "shots-toss/course.png", phone: "tilt", tilt: -7, x: 46, align: "right", chip: "코스 추천",
+    lines: ["제주 어디 갈지", "{고민 끝}"],
+    deco: [[4, 8, 14], [84, 70, 13]] },
+  { id: "05-직접짠", shot: "shots-toss/courselist.png", phone: "top", align: "left", chip: "추천 TOP 5",
+    lines: ["여행자가 {직접 짠}", "코스 그대로"],
+    deco: [[80, 125, 15], [4, 116, 12]] },
+  { id: "06-헤매지않게", shot: "shots-toss/place.png", phone: "bottom", x: 50, align: "center", chip: "이용 정보",
+    lines: ["현장에서", "{헤매지 않게}"],
+    deco: [[3, 70, 14], [82, 66, 16]] },
+];
+
+function headlineHTML(lines) {
+  return lines.map(l => l.replace(/\{(.+?)\}/g, '<span class="ac">$1</span>')).join("<br>");
+}
+
+function phoneTransform(s) {
+  // 토스 세로(636×1048)는 캔버스 높이가 폭의 1.65배뿐이라 폰을 작게 둔다 (앱스토어는 86).
+  const x = s.x ?? 50;
+  if (s.phone === "top")  return { pos: `left:${x}%;top:calc(var(--u) * ${-(s.cut ?? 12)});width:calc(var(--u) * 60);`, tf: "translateX(-50%)" };
+  if (s.phone === "tilt") return { pos: `left:${x}%;bottom:0;width:calc(var(--u) * 58);`, tf: `translateX(-50%) translateY(15%) rotate(${s.tilt}deg)` };
+  return { pos: `left:${x}%;bottom:0;width:calc(var(--u) * 62);`, tf: `translateX(-50%) translateY(${s.drop ?? 13}%)` };
+}
+
+function buildSlide(s, cW, cH) {
+  const u = cW / 100;
+  const el = document.createElement("div");
+  el.className = "slide";
+  el.dataset.id = s.id;
+  el.style.cssText = `width:${cW}px;height:${cH}px;--u:${u}px;background:${THEME.bg};--fg:${THEME.fg};`;
+
+  for (const [x, y, w] of s.deco || []) {
+    const img = document.createElement("img");
+    img.className = "deco";
+    img.src = cloud().src;
+    img.style.cssText = `left:${x}%;top:${y * u}px;width:${w * u}px;`;
+    el.appendChild(img);
+  }
+
+  const cap = document.createElement("div");
+  cap.className = `caption ${s.align}${s.phone === "top" ? " bottom" : ""}`;
+  const head = s.brand
+    ? `<div class="brand"><img src="app-icon.png" alt=""><span>놀멍봅서</span></div><br>`
+    : `<div class="chip">${s.chip}</div><br>`;
+  cap.innerHTML = head + `<div class="headline">${headlineHTML(s.lines)}</div>`;
+  el.appendChild(cap);
+
+  // 그림자는 바깥 층에 걸어서, 폰을 기울여도 그림자 방향은 늘 오른쪽 아래로 같게 한다
+  const layer = document.createElement("div");
+  layer.className = "phone-layer";
+  layer.style.filter = `drop-shadow(${u * 1.6}px ${u * 1.6}px 0 ${THEME.shadow}E6)`;
+  const { pos, tf } = phoneTransform(s);
+  const ph = document.createElement("div");
+  ph.className = "phone";
+  ph.style.cssText = `${pos}transform:${tf};`;
+  ph.innerHTML = `<img class="frame" src="mockup.png" alt=""><div class="screen"><img src="${s.shot}" alt=""></div>`;
+  layer.appendChild(ph);
+  el.appendChild(layer);
+  return el;
+}
+
+
+// ── 가로 썸네일 1932×828 ─────────────────────────────────────────────
+// 왼쪽에 아이콘·이름·한 줄, 오른쪽에 폰 두 대. 배경·강조색은 세로 스크린샷과 같다.
+function buildThumbnail() {
+  const cW = 1932, cH = 828, u = cW / 100;
+  const el = document.createElement("div");
+  el.className = "slide";
+  el.dataset.id = "thumbnail";
+  el.style.cssText = `width:${cW}px;height:${cH}px;--u:${u}px;background:${THEME.bg};--fg:${THEME.fg};`;
+  for (const [x, y, w] of [[2, 3, 7], [45, 33, 6], [93, 2, 6]]) {
+    const img = document.createElement("img");
+    img.className = "deco"; img.src = cloud().src;
+    img.style.cssText = `left:${x}%;top:${y * u}px;width:${w * u}px;`;
+    el.appendChild(img);
+  }
+  const cap = document.createElement("div");
+  cap.style.cssText = `position:absolute;left:${u * 6}px;top:50%;transform:translateY(-50%);z-index:3;`;
+  cap.innerHTML = `<div class="brand" style="gap:${u * 1.4}px;margin-bottom:${u * 2.4}px">
+      <img src="app-icon.png" alt="" style="width:${u * 6.4}px;height:${u * 6.4}px;border-radius:${u * 1.4}px;box-shadow:${u * .45}px ${u * .45}px 0 #181A2A">
+      <span style="font-size:${u * 3.4}px">놀멍봅서</span></div>
+    <div class="headline" style="font-size:${u * 5.2}px">${headlineHTML(["관광지를", "{플레이}하세요"])}</div>`;
+  el.appendChild(cap);
+  const layer = document.createElement("div");
+  layer.className = "phone-layer";
+  layer.style.filter = `drop-shadow(${u * .8}px ${u * .8}px 0 ${THEME.shadow}E6)`;
+  for (const [x, shot, rot, drop] of [[64, "shots-toss/runner.png", -6, 22], [84, "shots-toss/home.png", 6, 30]]) {
+    const ph = document.createElement("div");
+    ph.className = "phone";
+    ph.style.cssText = `left:${x}%;bottom:0;width:${u * 22}px;transform:translateX(-50%) translateY(${drop}%) rotate(${rot}deg);`;
+    ph.innerHTML = `<img class="frame" src="mockup.png" alt=""><div class="screen"><img src="${shot}" alt=""></div>`;
+    layer.appendChild(ph);
+  }
+  el.appendChild(layer);
+  return el;
+}
+
+const q = new URLSearchParams(location.search);
+const W = +(q.get("w") || 636), H = +(q.get("h") || 1048);
+const grid = document.getElementById("grid");
+
+if (q.has("export")) {
+  document.body.style.background = "#000";
+  grid.style.cssText = "display:block;padding:0;gap:0";
+  SLIDES.forEach(s => grid.appendChild(buildSlide(s, W, H)));
+  grid.appendChild(buildThumbnail());
+} else {
+  const PW = 320, scale = PW / W;
+  SLIDES.forEach(s => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `<div class="cap">${s.id}</div>`;
+    const stage = document.createElement("div");
+    stage.className = "stage";
+    stage.style.cssText = `width:${PW}px;height:${H * scale}px`;
+    const slide = buildSlide(s, W, H);
+    slide.style.transform = `scale(${scale})`;
+    stage.appendChild(slide);
+    card.appendChild(stage);
+    grid.appendChild(card);
+  });
+  const t = buildThumbnail(), tw = 640, ts = tw / 1932;
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `<div class="cap">thumbnail</div>`;
+  const stage = document.createElement("div");
+  stage.className = "stage";
+  stage.style.cssText = `width:${tw}px;height:${828 * ts}px`;
+  t.style.transform = `scale(${ts})`;
+  stage.appendChild(t); card.appendChild(stage); grid.appendChild(card);
+}
+</script>
+</body>
+</html>

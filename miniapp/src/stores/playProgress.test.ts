@@ -138,6 +138,15 @@ describe('PLAY 진행 저장소', () => {
     expect(store.load('b')?.pendingReveal).toBeNull();
   });
 
+  it('없앤 FINAL 이야기 자리({ after: final })가 저장돼 있어도 진행은 살리고 그 자리만 버린다', async () => {
+    // FINAL 뒤 이야기 칸은 2026-09-29 에 없앴다. 그 전 저장값을 읽다가 진행을 날리면 안 된다.
+    const saved = { ...createPlayProgress(makePlay('a'), 0), completedMissionIds: ['M01'], pendingReveal: { after: 'final' } };
+    const backend = createMemoryBackend({ [PLAY_PROGRESS_KEY]: JSON.stringify({ a: saved }) });
+    const store = await relaunch(backend);
+    expect(store.load('a')?.completedMissionIds).toEqual(['M01']);
+    expect(store.load('a')?.pendingReveal).toBeNull();
+  });
+
   it('저장소 쓰기가 실패해도 메모리의 진행은 남아 있다 — 이번 판은 끝까지 간다', async () => {
     const backend = createMemoryBackend();
     const store = await relaunch(backend);

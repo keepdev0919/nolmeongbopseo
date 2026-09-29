@@ -34,10 +34,7 @@ export const PLAY_PROGRESS_KEY = 'play_progress_v1';
  * 예전에는 이어서 할 때 그걸 건너뛰고 다음 미션으로 갔다 — 방금 찾은 것의 의미를 못 듣고
  * 지나가는 셈이다. 그래서 무엇을 보던 중이었는지 같이 적어 두고, 이어서 할 때 거기부터 연다.
  */
-export type PendingReveal =
-  | { after: 'mission'; missionId: string; stage: 'discovery' | 'story' }
-  /** FINAL 을 맞힌 뒤 FINAL 이야기를 듣던 중. 끝나면 CLEAR 다. */
-  | { after: 'final' };
+export type PendingReveal = { after: 'mission'; missionId: string; stage: 'discovery' | 'story' };
 
 /** 이번 판의 상태. */
 export interface PlayProgress {
@@ -150,7 +147,8 @@ function isPlayProgress(v: unknown): v is PlayProgress {
 function readPendingReveal(v: unknown): PendingReveal | null {
   if (typeof v !== 'object' || v === null) return null;
   const r = v as Record<string, unknown>;
-  if (r.after === 'final') return { after: 'final' };
+  // `{ after: 'final' }`(FINAL 뒤 이야기, 2026-09-29 칸째 없앰)도 여기서 null 이 된다 —
+  // 미션을 다 끝낸 저장값이라 FINAL 부터 다시 연다.
   if (r.after === 'mission' && typeof r.missionId === 'string' && (r.stage === 'discovery' || r.stage === 'story')) {
     return { after: 'mission', missionId: r.missionId, stage: r.stage };
   }

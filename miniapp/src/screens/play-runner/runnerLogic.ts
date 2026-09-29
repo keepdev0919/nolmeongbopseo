@@ -46,12 +46,6 @@ export interface RunnerState {
   progress: PlayProgress;
   /** 이미 안내를 마친 Point. 같은 Point 의 두 번째 미션에서 또 도착 화면을 띄우지 않는다. */
   introducedPointIds: string[];
-  /**
-   * 지금 이야기가 FINAL 뒤 이야기인가. 그 이야기 다음은 CLEAR 다.
-   * (Swift 는 이 구분이 없어 FINAL 이야기 뒤 `advance()` 가 FINAL 을 다시 띄운다 — 지금 원고는
-   *  FINAL 이야기가 없어 드러나지 않는 구멍이다.)
-   */
-  storyIsFinal: boolean;
 }
 
 export type RunnerAction =
@@ -78,7 +72,7 @@ const flatOf = (play: Play) => orderedMissions(play);
  * 미션을 전부 끝냈는데 CLEAR 전(FINAL 에서 나감)이면 **FINAL 부터** 다시 연다 — 공용
  * `resumeMissionIndex` 계약(「러너가 FINAL 로 넘긴다」). (2026-09-15 iOS 도 같게 고침)
  *
- * 끝낸 미션의 발견·이야기(또는 FINAL 이야기)를 보다가 나갔으면 **그 자리부터** 다시 연다
+ * 끝낸 미션의 발견·이야기를 보다가 나갔으면 **그 자리부터** 다시 연다
  * (`progress.pendingReveal`, 2026-09-15). 원고가 바뀌어 그 발견·이야기를 못 찾으면 위 규칙대로.
  */
 export function initRunner(play: Play, saved: PlayProgress | null, now: number = Date.now()): RunnerState {
@@ -92,7 +86,6 @@ export function initRunner(play: Play, saved: PlayProgress | null, now: number =
     justEarnedRecord: null,
     lastSkipped: false,
     introducedPointIds: [],
-    storyIsFinal: false,
   };
   if (saved && !isFinished(saved)) {
     const flat = flatOf(play);
@@ -117,11 +110,6 @@ function resumeReveal(
   const pending = saved.pendingReveal;
   if (!pending) return null;
   const flat = flatOf(play);
-  if (pending.after === 'final') {
-    const story = play.final?.story;
-    if (!story) return null;
-    return { phase: 'story', pendingStory: story, storyIsFinal: true, missionIndex: Math.max(flat.length - 1, 0) };
-  }
   const missionIndex = flat.findIndex(({ mission }) => mission.id === pending.missionId);
   if (missionIndex < 0) return null;
   const { point, mission } = flat[missionIndex];
@@ -236,7 +224,7 @@ export function reduceRunner(play: Play, s: RunnerState, action: RunnerAction): 
       return { ...s, progress, phase: 'story' };
     }
     case 'afterStory':
-      return s.storyIsFinal ? finish({ ...s, pendingStory: null, storyIsFinal: false }) : advance(play, s);
+      return advance(play, s);
     case 'submitFinal': {
       const final = play.final;
       if (!final) return finish(s);
@@ -249,22 +237,13 @@ export function reduceRunner(play: Play, s: RunnerState, action: RunnerAction): 
             : failureText(final.step);
         return { ...s, wrongMessage: msg };
       }
-      return passFinal(play, { ...s, wrongMessage: null });
+      // FINAL 을 맞히면 바로 CLEAR 다 — FINAL 뒤 이야기는 없다 (2026-09-29 결정).
+      return finish({ ...s, wrongMessage: null });
     }
     case 'debugPassFinal':
-      // 정답 경로와 **같은 길**을 탄다(이야기가 있으면 이야기부터).
-      return passFinal(play, { ...s, wrongMessage: null });
+      // 정답 경로와 **같은 길**(바로 CLEAR)을 탄다.
+      return finish({ ...s, wrongMessage: null });
   }
-}
-
-function passFinal(play: Play, s: RunnerState): RunnerState {
-  const story = play.final?.story;
-  if (story) {
-    // FINAL 은 맞혔다 — 이야기 중에 나가도 FINAL 을 다시 풀지 않고 이야기부터 연다.
-    const progress = { ...s.progress, pendingReveal: { after: 'final' as const } };
-    return { ...s, progress, pendingStory: story, storyIsFinal: true, phase: 'story' };
-  }
-  return finish(s);
 }
 
 function proceedAfterStep(play: Play, s: RunnerState, mission: Mission): RunnerState {
@@ -296,7 +275,6 @@ function completeMission(play: Play, s: RunnerState, mission: Mission, skipped: 
     pendingSuccess: null,
     pendingDiscovery,
     pendingStory,
-    storyIsFinal: false,
     hintLevel: 0,
     stepIndex: 0,
     // 새 객체 → 화면이 저장한다 (미션 단위 저장). 뒤에 볼 발견·이야기가 있으면 그 자리도 같이.
@@ -322,7 +300,7 @@ function advance(play: Play, s: RunnerState): RunnerState {
   const flat = flatOf(play);
   // 발견·이야기를 다 봤다 — 보다 만 자리 기록을 지운다 (바뀔 때만 새 객체 = 저장).
   const progress = s.progress.pendingReveal ? { ...s.progress, pendingReveal: null } : s.progress;
-  const cleared = { ...s, progress, pendingDiscovery: null, pendingStory: null, justEarnedRecord: null, storyIsFinal: false, wrongMessage: null };
+  const cleared = { ...s, progress, pendingDiscovery: null, pendingStory: null, justEarnedRecord: null, wrongMessage: null };
   if (s.missionIndex + 1 < flat.length) {
     const missionIndex = s.missionIndex + 1;
     const nextPoint = flat[missionIndex].point;
@@ -436,7 +414,6 @@ export function speechOrder(play: Play): string[] {
   }
   if (play.final) {
     order.push('final');
-    if (play.final.story) order.push(`story:${play.final.story.id}`);
   }
   if (play.clear?.body) order.push('clear');
   return order;

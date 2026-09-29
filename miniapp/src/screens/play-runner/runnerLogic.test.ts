@@ -90,7 +90,6 @@ function seongeup(): Play {
         answer: ['a', 'b', 'c'],
         failureFeedback: '다시 생각해봐.',
       }),
-      story: null,
       hints: [{ text: 'f1' }, { text: 'f2' }],
     },
     clear: { title: '복원 완료', body: '네가 복원한 건 살았던 방식이야.' },
@@ -158,20 +157,6 @@ describe('처음부터 CLEAR 까지', () => {
   it('FINAL 이 없으면 마지막 미션 다음이 곧 CLEAR 다', () => {
     const play = { ...seongeup(), final: null };
     const s = run(play, initRunner(play, null, 0), { type: 'skip' }, { type: 'skip' }, { type: 'afterDiscovery' }, { type: 'afterStory' }, { type: 'skip' }, { type: 'afterDiscovery' });
-    expect(s.phase).toBe('clear');
-    expect(s.progress.finalCleared).toBe(true);
-  });
-
-  it('FINAL 뒤 이야기가 있으면 이야기를 듣고 CLEAR 로 간다 (FINAL 로 되돌아가지 않는다)', () => {
-    const base = seongeup();
-    const play: Play = { ...base, final: { ...base.final!, story: { id: 'sf', title: '', script: '끝 이야기', sources: [], unlockAfterMission: '' } } };
-    let s = initRunner(play, null, 0);
-    s = { ...s, phase: 'finalStage', missionIndex: 2 };
-    s = run(play, s, { type: 'submitFinal', answer: ['a', 'b', 'c'] });
-    expect(s.phase).toBe('story');
-    expect(currentLine(play, s)).toBe('story:sf');
-    expect(s.progress.finalCleared).toBe(false);
-    s = run(play, s, { type: 'afterStory' });
     expect(s.phase).toBe('clear');
     expect(s.progress.finalCleared).toBe(true);
   });
@@ -347,23 +332,6 @@ describe('저장 시점과 이어하기', () => {
       const r = run(play, initRunner(play, saved, 999), { type: 'afterStory' });
       expect(r.phase).toBe('mission');
       expect(currentMission(play, r)?.id).toBe('m02');
-    });
-
-    it('FINAL 을 맞히고 FINAL 이야기를 듣다 나가면 → FINAL 을 다시 풀지 않고 이야기부터, 끝나면 CLEAR', () => {
-      const base = seongeup();
-      const play: Play = { ...base, final: { ...base.final!, story: { id: 'sf', title: '', script: '끝 이야기', sources: [], unlockAfterMission: '' } } };
-      let s = initRunner(play, { ...createPlayProgress(play, 5), completedMissionIds: ['m01', 'm02', 'm03'] }, 10);
-      expect(s.phase).toBe('finalStage');
-      s = run(play, s, { type: 'submitFinal', answer: ['a', 'b', 'c'] });
-      expect(s.progress.pendingReveal).toEqual({ after: 'final' });
-
-      let r = initRunner(play, s.progress, 999);
-      expect(r.phase).toBe('story');
-      expect(currentLine(play, r)).toBe('story:sf');
-      r = run(play, r, { type: 'afterStory' });
-      expect(r.phase).toBe('clear');
-      expect(r.progress.finalCleared).toBe(true);
-      expect(r.progress.pendingReveal).toBeNull();
     });
 
     it('원고가 바뀌어 그 발견·이야기를 못 찾으면 예전 규칙(완료한 미션 다음)대로', () => {

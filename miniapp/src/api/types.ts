@@ -97,7 +97,8 @@ export interface FinalStage {
   title: string;
   prompt: string;
   step: MissionStep;
-  story: PlayStory | null;
+  // FINAL 뒤에 이야기를 끼우지 않는다 (2026-09-29 결정) — FINAL 을 맞히면 바로 CLEAR.
+  // 마무리 글은 `clear.body` 한 곳이 맡는다. 서버 원고도 이 칸을 받지 않는다.
   hints: MissionHint[];
 }
 

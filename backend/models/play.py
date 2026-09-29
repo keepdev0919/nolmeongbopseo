@@ -46,7 +46,7 @@ from __future__ import annotations
 
 from typing import Any, Literal, Optional
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 # ── 어휘 ──────────────────────────────────────────────────────────────────────
 
@@ -272,12 +272,18 @@ class FinalStage(BaseModel):
     """마지막 조립. **새 잡학 문제를 내지 않는다.**
 
     지금까지 사용자가 직접 발견한 것을 다시 이어 붙여 하나의 의미로 만든다.
+
+    **FINAL 뒤에 이야기를 끼우지 않는다** (2026-09-29 결정). FINAL 을 맞히면 바로
+    CLEAR 로 가고, 마무리 글은 `clear.body` 한 곳이 맡는다. 원고에 `story` 칸을
+    적으면 서버가 뜨기 전에 거부한다 — 모르는 칸을 조용히 버리면 쓴 사람은
+    나온다고 믿는데 화면엔 안 나온다.
     """
+    model_config = ConfigDict(extra="forbid")
+
     id: str = "final"
     title: str
     prompt: str = ""
     step: Step
-    story: Optional[Story] = None
     # 2026-09-07 추가. FINAL 도 다른 Mission 처럼 힌트 2단계를 갖는다.
     hints: list[Hint] = Field(default_factory=list)
 

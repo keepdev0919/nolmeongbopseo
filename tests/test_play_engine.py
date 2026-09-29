@@ -340,16 +340,13 @@ class TestStoryTTS:
         assert {"play_id", "story_id"} <= set(params)
 
     def test_모든_story_가_읽힌다(self, conn, seongeup):
-        """FINAL 뒤의 Story 도 포함해서, 화면이 열 수 있는 이야기는 전부
-        음성 경로가 있어야 한다. 하나만 소리가 안 나면 현장에서 그 자리만 어색해진다.
+        """화면이 열 수 있는 이야기는 전부 음성 경로가 있어야 한다.
+        하나만 소리가 안 나면 현장에서 그 자리만 어색해진다.
         """
         from routers.tts import tts_for_story  # noqa: F401  (임포트만 확인)
         ids = {s.id for s in seongeup.stories}
-        if seongeup.final and seongeup.final.story:
-            ids.add(seongeup.final.story.id)
-        assert len(ids) == len(seongeup.stories) + (
-            1 if (seongeup.final and seongeup.final.story) else 0
-        ), "Story id 가 겹칩니다 — 겹치면 엉뚱한 음성이 재생된다"
+        assert len(ids) == len(seongeup.stories), \
+            "Story id 가 겹칩니다 — 겹치면 엉뚱한 음성이 재생된다"
 
 
 # ── 모델 방어 ─────────────────────────────────────────────────────────────────
@@ -380,6 +377,19 @@ class TestModelGuards:
             Mission(id="x", title="x",
                     steps=[{"input_type": "CONFIRM", "prompt": "?"}],
                     hints=[{"text": "1"}, {"text": "2"}, {"text": "3"}])
+
+    def test_FINAL_뒤_이야기를_막는다(self):
+        """FINAL 을 맞히면 바로 CLEAR 로 간다 (2026-09-29 결정). FINAL 뒤 이야기 칸은
+        없앴다 — 앱스토어에 나간 iOS 앱은 그 이야기를 읽은 뒤 FINAL 로 되돌아가
+        CLEAR 에 닿지 못한다. 원고에 다시 적히면 서버가 뜨기 전에 막는다.
+        """
+        raw = json.loads((BASE_DIR / "data/plays/seongeup.json").read_text(encoding="utf-8"))
+        raw = {k: v for k, v in raw.items() if not k.startswith("_")}
+        assert "story" not in raw["final"]
+        raw["final"]["story"] = {"id": "s-final", "title": "끝", "script": "끝.",
+                                 "unlock_after_mission": "final"}
+        with pytest.raises(ValueError):
+            Play(**raw)
 
     def test_아무도_안_채우는_진행도_칸을_막는다(self):
         """끝까지 가도 100%가 안 되는 PLAY 를 배포하지 않는다."""

@@ -30,7 +30,7 @@ def test_first_request_announces_a_visit_and_what_was_opened(sent):
     visit_notify.observe("GET", f"/plays/{PLAY_ID}", "", now=T0)
     assert len(sent) == 1
     first, second = sent[0].split("\n")
-    assert first == "👀 누군가 앱을 쓰기 시작했어요 · 앱스토어"
+    assert first == "[앱스토어] 👀 누군가 앱을 쓰기 시작했어요"
     assert second.startswith("📜 PLAY 상세를 열었어요 · ") and "복원" in second
 
 
@@ -45,7 +45,7 @@ def test_quiet_gap_starts_a_new_visit(sent):
     visit_notify.observe("GET", "/plays", "", now=T0)
     visit_notify.observe("GET", "/plays", "", now=T0 + 29 * 60)
     visit_notify.observe("GET", "/plays", "", now=T0 + 29 * 60 + visit_notify.QUIET_GAP_SEC)
-    assert sent == ["👀 누군가 앱을 쓰기 시작했어요 · 앱스토어"] * 2
+    assert sent == ["[앱스토어] 👀 누군가 앱을 쓰기 시작했어요"] * 2
 
 
 def test_place_detail_names_the_place(sent):
@@ -72,7 +72,7 @@ def test_non_app_requests_are_not_visits(sent):
 
 def test_unknown_play_is_ignored_but_still_a_visit(sent):
     visit_notify.observe("GET", "/plays/no-such-play", "", now=T0)
-    assert sent == ["👀 누군가 앱을 쓰기 시작했어요 · 앱스토어"]
+    assert sent == ["[앱스토어] 👀 누군가 앱을 쓰기 시작했어요"]
 
 
 def test_app_request_succeeds_even_if_telegram_fails(client, monkeypatch):
@@ -118,3 +118,11 @@ def test_hourly_cap_drops_and_reports(monkeypatch):
 
     admin_notify.send_capped("later", now=1000.0 + 3600 + 1)
     assert out[-1] == "later\n(한 시간 상한을 넘어 알림 5건을 건너뛰었어요)"
+
+
+def test_every_message_says_which_app(sent, monkeypatch):
+    """같은 방문 안에서 이어지는 알림에도 어느 앱인지 붙는다 — 두 서버가 같은 봇으로 보낸다."""
+    monkeypatch.setenv("RAILWAY_ENVIRONMENT_NAME", "apps-in-toss")
+    visit_notify.observe("GET", "/plays", "", now=T0)
+    visit_notify.observe("GET", f"/plays/{PLAY_ID}", "", now=T0 + 60)
+    assert len(sent) == 2 and all(m.startswith("[토스] ") for m in sent)

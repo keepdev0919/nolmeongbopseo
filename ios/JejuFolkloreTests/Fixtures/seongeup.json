@@ -1,0 +1,693 @@
+{
+  "id": "seongeup-restore",
+  "place_key": "seongeup-folk-village",
+  "place_id": "01a0611f-4f78-77a2-b37b-b366721cbe45",
+  "place_name": "성읍민속마을",
+  "title": "성읍 생활기록 복원작전",
+  "objective": "성읍 민속마을에 숨겨진 옛 생활기록들이 사라질 위기에 처했습니다. 네 곳의 전통 가옥을 방문하여 흩어진 기록의 파편을 찾아 복원해주십시오. ",
+  "card_summary": "네 채의 집을 직접 조사하여 사라진 생활기록을 복원하세요",
+  "estimated_minutes_min": 60,
+  "estimated_minutes_max": 75,
+  "distance_meters": 1000,
+  "difficulty": "쉬움",
+  "difficulty_stars": 2,
+  "progress_label": "생활기록",
+  "progress_records": [
+    {
+      "id": "boundary",
+      "label": "경계"
+    },
+    {
+      "id": "entrance",
+      "label": "출입"
+    },
+    {
+      "id": "space",
+      "label": "공간"
+    },
+    {
+      "id": "family",
+      "label": "가족"
+    },
+    {
+      "id": "water",
+      "label": "물"
+    },
+    {
+      "id": "talk",
+      "label": "소통"
+    }
+  ],
+  "route_reveal_mode": "FULL",
+  "start_name": "성읍민속마을 무료공영주차장",
+  "start_lat": null,
+  "start_lng": null,
+  "finish_name": "성읍민속마을 무료공영주차장",
+  "points": [
+    {
+      "id": "p1-daejanggan",
+      "title": "대장간집",
+      "objective": "대문이 없는 집에서 제주식 경계의 흔적을 찾아라.",
+      "lat": 33.386248,
+      "lng": 126.801893,
+      "navigation_text": "주차장에서 마을 안쪽으로 쭉 들어가 봐! 제일 먼저 만나는 초가집이 여기야.",
+      "intro": "500년 동안 정의현의 도읍지였던 마을입니다. 첫 번째 집부터 조사합니다.",
+      "missions": [
+        {
+          "id": "m01",
+          "title": "문이 사라졌다",
+          "patterns": [
+            "FIND"
+          ],
+          "prompt": "이 집, 사람들이 어디로 들어갈까? 입구부터 한번 찾아봐. 아, 방문 말고! 집 전체를 막는 진짜 대문이 있는지부터 보는 거야.",
+          "steps": [
+            {
+              "input_type": "CHOICE",
+              "prompt": "",
+              "options": [
+                {
+                  "id": "yes",
+                  "label": "대문이 보여요",
+                  "image": null
+                },
+                {
+                  "id": "no",
+                  "label": "아무리 찾아도 없어요",
+                  "image": null
+                }
+              ],
+              "match_targets": [],
+              "answer": "no",
+              "success_feedback": "찾았지? 근데 이 집엔 보통 대문이 없어! 그럼… 집 안이랑 밖은 대체 뭘로 나눴을까?",
+              "failure_feedback": "음, 그건 방문 아니야? 집 전체로 들어가는 입구를 다시 한번 찾아봐."
+            }
+          ],
+          "hints": [
+            {
+              "text": "사람이 길에서 집 안으로 들어가는 곳을 보세요."
+            },
+            {
+              "text": "여닫을 수 있는 나무 대문이 있는지 확인하세요."
+            }
+          ],
+          "discovery": null,
+          "progress_reward": null,
+          "verification": "strong",
+          "is_showcase": false
+        },
+        {
+          "id": "m02",
+          "title": "사라진 경계",
+          "patterns": [
+            "FIND",
+            "COMPARE",
+            "INFER"
+          ],
+          "prompt": "입구 양쪽 잘 봐봐. 서로 마주 보고 서 있는 돌, 두 개 보이지 않아?",
+          "steps": [
+            {
+              "input_type": "CONFIRM",
+              "prompt": "서로 마주 보고 서 있는 돌, 두 개 찾아봐.",
+              "options": [],
+              "match_targets": [],
+              "answer": null,
+              "success_feedback": "",
+              "failure_feedback": ""
+            },
+            {
+              "input_type": "CHOICE",
+              "prompt": "이번엔 그 두 돌 사이, 빈 공간을 봐봐. 이 모양, 뭔가를 가로로 걸쳐두기 딱 좋게 생기지 않았어?",
+              "options": [
+                {
+                  "id": "pole",
+                  "label": "긴 나무막대",
+                  "image": null
+                },
+                {
+                  "id": "slab",
+                  "label": "넓은 돌판",
+                  "image": null
+                },
+                {
+                  "id": "bucket",
+                  "label": "물통",
+                  "image": null
+                }
+              ],
+              "match_targets": [],
+              "answer": "pole",
+              "success_feedback": "",
+              "failure_feedback": "그 사이에 긴 걸 가로로 걸칠 수 있을지, 모양을 다시 한번 뜯어봐."
+            }
+          ],
+          "hints": [
+            {
+              "text": "입구의 양쪽 가장자리를 살펴보세요."
+            },
+            {
+              "text": "서로 한 쌍처럼 마주 보는 돌을 찾으세요."
+            }
+          ],
+          "discovery": {
+            "title": "정주석",
+            "body": "대문 없는 입구 양쪽에, 정낭을 걸쳐두던 돌기둥이 아직도 남아 있어!"
+          },
+          "progress_reward": "boundary",
+          "verification": "strong",
+          "is_showcase": false
+        }
+      ]
+    },
+    {
+      "id": "p2-gaekjuchip",
+      "title": "객주집",
+      "objective": "첫 번째 집과 다른 출입 구조를 비교하고, 집 한 채가 아니라 마당 전체를 읽어라.",
+      "lat": 33.386672,
+      "lng": 126.801666,
+      "navigation_text": "대장간집 바로 옆이야, 한 50m만 더 가면 돼!",
+      "intro": "성읍은 농촌 마을이기만 한 곳이 아니었습니다. 사람들이 오가던 정의현의 중심지였습니다.",
+      "missions": [
+        {
+          "id": "m03",
+          "title": "같은 마을, 다른 입구",
+          "patterns": [
+            "COMPARE"
+          ],
+          "prompt": "아까 대장간집 입구 기억나? 이번엔 객주집 입구를 한번 봐봐. 뭐가 제일 다른 것 같아?",
+          "steps": [
+            {
+              "input_type": "CHOICE",
+              "prompt": "자, 두 집의 제일 큰 차이가 뭘까?",
+              "options": [
+                {
+                  "id": "none",
+                  "label": "두 집 모두 별도의 대문간이 없다",
+                  "image": null
+                },
+                {
+                  "id": "gate",
+                  "label": "객주집에는 출입을 위한 대문간이 있다",
+                  "image": null
+                },
+                {
+                  "id": "single",
+                  "label": "객주집은 집채가 하나뿐이다",
+                  "image": null
+                }
+              ],
+              "match_targets": [],
+              "answer": "gate",
+              "success_feedback": "",
+              "failure_feedback": "안쪽 말고, 사람이 드나드는 입구부터 다시 봐봐."
+            }
+          ],
+          "hints": [
+            {
+              "text": "첫 번째 집에서 찾지 못했던 것이 무엇이었는지 떠올려보세요."
+            },
+            {
+              "text": "객주집의 입구에는 출입구 역할을 하는 별도의 건물 구조가 있습니다."
+            }
+          ],
+          "discovery": {
+            "title": "대문간",
+            "body": "저번 집이랑 다르게, 여긴 대문간을 거쳐야 안으로 들어갈 수 있어!"
+          },
+          "progress_reward": "entrance",
+          "verification": "strong",
+          "is_showcase": false
+        },
+        {
+          "id": "m04",
+          "title": "마당을 읽어라",
+          "patterns": [
+            "COMPARE",
+            "FOLLOW"
+          ],
+          "prompt": "집 한 채만 보지 말고, 마당을 가운데 두고 주변을 천천히 둘러봐봐. 집채들이 마당이랑 어떻게 놓여 있어?",
+          "steps": [
+            {
+              "input_type": "CHOICE",
+              "prompt": "",
+              "options": [
+                {
+                  "id": "line",
+                  "label": "집채들이 한쪽에 일렬로 모여 있다",
+                  "image": null
+                },
+                {
+                  "id": "around",
+                  "label": "여러 집채가 마당 주변을 둘러싼다",
+                  "image": null
+                },
+                {
+                  "id": "single",
+                  "label": "큰 집채 하나만 마당을 바라본다",
+                  "image": null
+                }
+              ],
+              "match_targets": [],
+              "answer": "around",
+              "success_feedback": "",
+              "failure_feedback": "건물 하나만 보지 말고, 마당 중심으로 전체를 한번 더 둘러봐."
+            }
+          ],
+          "hints": [
+            {
+              "text": "마당을 중심에 두고 시선을 한 바퀴 돌려보세요."
+            },
+            {
+              "text": "한 방향이 아니라 여러 방향에서 집채가 마당을 둘러싸는지 확인하세요."
+            }
+          ],
+          "discovery": {
+            "title": "",
+            "body": "객주집은 집 한 채가 다가 아니었어 — 여러 집채랑 마당이 다 같이 모여서 하나의 생활공간을 이루는 거였어!"
+          },
+          "progress_reward": "space",
+          "verification": "likely",
+          "is_showcase": false
+        }
+      ]
+    },
+    {
+      "id": "p3-hanbongil",
+      "title": "한봉일 고택",
+      "objective": "한 울타리 안의 두 생활공간과 물을 다루던 흔적을 찾아라.",
+      "lat": 33.387177,
+      "lng": 126.803225,
+      "navigation_text": "객주집에서 마을 안쪽으로 한 150m! 조금만 더 걸어가 보자.",
+      "intro": "이번에는 집 안의 살림이 어떻게 나뉘어 있었는지 봅니다.",
+      "missions": [
+        {
+          "id": "m05",
+          "title": "마주한 두 살림집",
+          "patterns": [
+            "FIND",
+            "COMPARE"
+          ],
+          "prompt": "마당에 있는 집채들 한번 비교해봐. 중요한 생활공간이 한 채뿐일까, 아니면 서로 마주 보는 두 채가 있을까?",
+          "steps": [
+            {
+              "input_type": "CHOICE",
+              "prompt": "",
+              "options": [
+                {
+                  "id": "one",
+                  "label": "중요한 생활공간이 한 채뿐이다",
+                  "image": null
+                },
+                {
+                  "id": "facing",
+                  "label": "두 주요 집채가 마당을 사이에 두고 마주 본다",
+                  "image": null
+                },
+                {
+                  "id": "row",
+                  "label": "여러 집채가 길게 한 줄로 이어진다",
+                  "image": null
+                }
+              ],
+              "match_targets": [],
+              "answer": "facing",
+              "success_feedback": "",
+              "failure_feedback": "마당 한쪽만 보지 말고, 맞은편도 같이 봐봐."
+            }
+          ],
+          "hints": [
+            {
+              "text": "마당 양쪽의 주요 집채를 함께 비교해보세요."
+            },
+            {
+              "text": "안거리와 밖거리라는 두 주요 생활공간을 찾는 Mission입니다."
+            }
+          ],
+          "discovery": {
+            "title": "안거리 + 밖거리",
+            "body": "같은 울타리 안인데, 서로 다른 생활공간이 두 개나 있었네!"
+          },
+          "progress_reward": null,
+          "verification": "strong",
+          "is_showcase": false
+        },
+        {
+          "id": "m06",
+          "title": "한 울타리, 두 살림",
+          "patterns": [
+            "INFER"
+          ],
+          "prompt": "방금 안거리랑 밖거리, 이렇게 두 살림공간을 찾았지? 근데 제주 전통가옥은 왜 이렇게 살림을 나눠 썼을까?",
+          "steps": [
+            {
+              "input_type": "CHOICE",
+              "prompt": "",
+              "options": [
+                {
+                  "id": "gender",
+                  "label": "남성과 여성이 나뉘어 살기 위해",
+                  "image": null
+                },
+                {
+                  "id": "generation",
+                  "label": "부모 세대와 자녀 세대가 각각 살림하기 위해",
+                  "image": null
+                },
+                {
+                  "id": "servant",
+                  "label": "주인과 일꾼이 나뉘어 살기 위해",
+                  "image": null
+                }
+              ],
+              "match_targets": [],
+              "answer": "generation",
+              "success_feedback": "",
+              "failure_feedback": "성별이나 신분 말고, 가족 안의 세대 쪽으로 다시 생각해봐."
+            }
+          ],
+          "hints": [
+            {
+              "text": "부모와 자녀가 같은 울타리 안에서 어떻게 살았을지 생각해보세요."
+            },
+            {
+              "text": "부모와 결혼한 자녀 세대가 각각 별도의 살림공간을 둘 수 있었습니다."
+            }
+          ],
+          "discovery": {
+            "title": "",
+            "body": "한 울타리 안이어도, 부모 세대랑 자녀 세대가 각자 따로 살림을 꾸릴 수 있었던 거야."
+          },
+          "progress_reward": "family",
+          "verification": "strong",
+          "is_showcase": false
+        },
+        {
+          "id": "m07",
+          "title": "물의 자리",
+          "patterns": [
+            "FIND",
+            "INFER"
+          ],
+          "prompt": "안거리 부엌 앞쪽을 한번 봐봐. 뭔가를 올려두려고 만든 돌 받침 구조, 보여?",
+          "steps": [
+            {
+              "input_type": "CONFIRM",
+              "prompt": "돌 받침 구조부터 찾아봐.",
+              "options": [],
+              "match_targets": [],
+              "answer": null,
+              "success_feedback": "",
+              "failure_feedback": ""
+            },
+            {
+              "input_type": "CHOICE",
+              "prompt": "이 받침, 여기다 뭘 올려뒀을 것 같아?",
+              "options": [
+                {
+                  "id": "water",
+                  "label": "물구덕",
+                  "image": null
+                },
+                {
+                  "id": "wood",
+                  "label": "장작",
+                  "image": null
+                },
+                {
+                  "id": "tile",
+                  "label": "기와",
+                  "image": null
+                }
+              ],
+              "match_targets": [],
+              "answer": "water",
+              "success_feedback": "",
+              "failure_feedback": "부엌에서 물이랑 관련된 생활도구, 뭐가 있었는지 떠올려봐."
+            }
+          ],
+          "hints": [
+            {
+              "text": "부엌 앞쪽을 먼저 살펴보세요."
+            },
+            {
+              "text": "바닥의 돌 하나가 아니라 물건을 올려두기 좋은 받침 형태를 찾으세요."
+            }
+          ],
+          "discovery": {
+            "title": "물팡",
+            "body": "물 길어 나를 때 쓰던 물구덕, 그거 올려두던 돌 받침을 찾은 거야!"
+          },
+          "progress_reward": "water",
+          "verification": "likely",
+          "is_showcase": false
+        }
+      ]
+    },
+    {
+      "id": "p4-gochanghwan",
+      "title": "고창환 고택",
+      "objective": "평범한 문처럼 보이는 곳에서 소통을 위한 작은 장치를 찾아라.",
+      "lat": 33.387231,
+      "lng": 126.800275,
+      "navigation_text": "한봉일 고택에서 마을 서쪽으로 한 270m! 마지막 집으로 가보자.",
+      "intro": "마지막 집입니다. 문을 아주 자세히 보셔야 합니다.",
+      "missions": [
+        {
+          "id": "m08",
+          "title": "문 속의 문",
+          "patterns": [
+            "FIND",
+            "COMPARE",
+            "INFER"
+          ],
+          "prompt": "대청마루 앞에 있는 문들을 서로 비교해봐. 그중 하나엔 큰 문 안에 작은 문이 숨어 있대 — 찾아볼래?",
+          "steps": [
+            {
+              "input_type": "CONFIRM",
+              "prompt": "",
+              "options": [],
+              "match_targets": [],
+              "answer": null,
+              "success_feedback": "",
+              "failure_feedback": ""
+            },
+            {
+              "input_type": "DIRECTION",
+              "prompt": "작은 문, 어느 쪽에 있는 것 같아?",
+              "options": [],
+              "match_targets": [],
+              "answer": "RIGHT",
+              "success_feedback": "",
+              "failure_feedback": "두 문을 한 번에 같이 봐봐. 작은 문은 딱 한쪽에만 있어."
+            },
+            {
+              "input_type": "CHOICE",
+              "prompt": "사람 한 명 드나들기엔 너무 작은 이 문, 대체 뭘 위해 만든 걸까?",
+              "options": [
+                {
+                  "id": "talk",
+                  "label": "바깥사람과 간단히 소통하기 위해",
+                  "image": null
+                },
+                {
+                  "id": "light",
+                  "label": "햇빛을 더 들이기 위해",
+                  "image": null
+                },
+                {
+                  "id": "store",
+                  "label": "작은 물건을 보관하기 위해",
+                  "image": null
+                }
+              ],
+              "match_targets": [],
+              "answer": "talk",
+              "success_feedback": "",
+              "failure_feedback": "사람이 드나드는 거 말고, 이 작은 문으로 뭘 할 수 있을지 생각해봐."
+            }
+          ],
+          "hints": [
+            {
+              "text": "대청마루 앞에 나란히 있는 문들을 비교해보세요."
+            },
+            {
+              "text": "큰 문 한쪽에 작은 문짝이 다시 들어간 곳을 찾으세요."
+            }
+          ],
+          "discovery": {
+            "title": "호령창",
+            "body": "큰 문을 다 안 열어도, 바깥사람 부르고 얘기할 수 있던 작은 문을 찾은 거야!"
+          },
+          "progress_reward": "talk",
+          "verification": "strong",
+          "is_showcase": true
+        }
+      ]
+    }
+  ],
+  "stories": [
+    {
+      "id": "s01",
+      "title": "문 대신 남은 경계",
+      "script": "저 돌기둥 이름 알아? 정주석이야! 근데 대문도 없는 집에 저런 돌은 왜 있을까? 사실 옛날엔 저 돌 사이에 정낭이라는 나무 막대를 걸어서 대문처럼 썼대. 나무는 없어졌지만 돌은 지금까지 남아서 입구를 지키고 있는 거야 — 신기하지?",
+      "sources": [
+        {
+          "kind": "encykorea",
+          "ref": "제주 성읍마을 대장간집",
+          "note": "대문 부재 · 정낭의 정주석이 입구 양쪽에 남아 있음"
+        },
+        {
+          "kind": "odii",
+          "ref": "2164",
+          "note": "대장간집의 위치·배치·대문 부재 맥락. 정주석 직접 설명 Source 로는 쓰지 않음"
+        }
+      ],
+      "unlock_after_mission": "m02"
+    },
+    {
+      "id": "s02",
+      "title": "집보다 먼저 마당을 읽기",
+      "script": "제주 전통가옥은 방 하나만 딱 보면 전체 그림이 잘 안 보여. 객주집엔 대문간, 안거리, 밖거리, 모커리, 창고까지 마당을 중심으로 다 모여 있거든. 방금 네가 둘러본 그 마당이, 사실 이 모든 공간을 이어주는 진짜 중심이었던 거야.",
+      "sources": [
+        {
+          "kind": "encykorea",
+          "ref": "제주 성읍마을 객주집",
+          "note": "다섯 채 · 마당 중심 배치 · 튼ㅁ자형"
+        },
+        {
+          "kind": "odii",
+          "ref": "2166",
+          "note": "객주집 안거리·밖거리·정낭·생활도구 맥락"
+        }
+      ],
+      "unlock_after_mission": "m04"
+    },
+    {
+      "id": "s03",
+      "title": "한 가족, 두 살림",
+      "script": "육지 전통가옥이 보통 남녀 공간을 나눴다면, 제주는 좀 달라 — 세대로 공간을 나누는 게 더 두드러졌대. 안거리랑 밖거리를 중심으로, 부모 세대랑 자녀 세대가 부엌도 따로 쓰고 각자 생활을 이어가는 경우가 있었던 거야.",
+      "sources": [
+        {
+          "kind": "encykorea",
+          "ref": "제주도의 초가",
+          "note": "세대별 공간분리 · 부모세대/자녀세대 · 별도 취사"
+        },
+        {
+          "kind": "odii",
+          "ref": "982",
+          "note": "성읍의 전형적인 안거리·밖거리 주거문화 맥락"
+        },
+        {
+          "kind": "odii",
+          "ref": "2165",
+          "note": "한봉일 고택의 안거리·밖거리 존재 맥락"
+        }
+      ],
+      "unlock_after_mission": "m06"
+    },
+    {
+      "id": "s04",
+      "title": "물을 내려놓는 자리",
+      "script": "방금 찾은 그 구조, 이름이 물팡이야. 제주에서는 허벅 같은 물동이를 물구덕에 넣고 등에 져서 물을 날랐대. 부엌 앞 물팡은, 그 무거운 물구덕을 내려놨다가 다시 들기 편하라고 만든 생활시설이었던 거지.",
+      "sources": [
+        {
+          "kind": "encykorea",
+          "ref": "제주 성읍마을 한봉일 고택",
+          "note": "부엌 앞 물팡 · 물구덕 용도"
+        },
+        {
+          "kind": "encykorea",
+          "ref": "제주 성읍마을 고창환 고택",
+          "note": "물팡 구조 · 물구덕/허벅 설명"
+        },
+        {
+          "kind": "odii",
+          "ref": "2161",
+          "note": "물팡 생활문화 참고. 원문 자동 재생하지 않음"
+        }
+      ],
+      "unlock_after_mission": "m07"
+    },
+    {
+      "id": "s05",
+      "title": "문을 열지 않고도",
+      "script": "이 작은 문, 이름은 호령창이야. 고창환 고택은 대청마루 앞 두 문 중에 딱 한쪽에만 이게 달려있어. 주인이 일꾼을 부르거나 바깥사람이랑 짧게 얘기할 때 쓰던, 작은 소통 창구였던 거지.",
+      "sources": [
+        {
+          "kind": "encykorea",
+          "ref": "제주 성읍마을 고창환 고택",
+          "note": "호령창 · 위치 · 사용 목적"
+        },
+        {
+          "kind": "odii",
+          "ref": "2161",
+          "note": "고창환 고택 호령창 생활문화 맥락"
+        }
+      ],
+      "unlock_after_mission": "m08"
+    }
+  ],
+  "final": {
+    "id": "final",
+    "title": "생활기록 복원",
+    "prompt": "네 채 집에서 찾은 흔적들, 이제 다 모였어! 이걸로 성읍 사람의 하루를 한번 그려볼까? 순서대로 이어봐.",
+    "step": {
+      "input_type": "MATCH_ORDER",
+      "prompt": "새벽부터 저녁까지, 방금 찾은 것들로 성읍 사람의 하루를 순서대로 세워봐.",
+      "options": [
+        {
+          "id": "jeongjuseok",
+          "label": "정주석",
+          "image": null
+        },
+        {
+          "id": "daemungan",
+          "label": "대문간",
+          "image": null
+        },
+        {
+          "id": "madang",
+          "label": "마당과 여러 집채",
+          "image": null
+        },
+        {
+          "id": "geori",
+          "label": "안거리 · 밖거리",
+          "image": null
+        },
+        {
+          "id": "mulpang",
+          "label": "물팡",
+          "image": null
+        },
+        {
+          "id": "horyeongchang",
+          "label": "호령창",
+          "image": null
+        }
+      ],
+      "match_targets": [],
+      "answer": [
+        "jeongjuseok",
+        "mulpang",
+        "geori",
+        "daemungan",
+        "madang",
+        "horyeongchang"
+      ],
+      "success_feedback": "성읍 사람의 하루를 완벽하게 그려냈어! 진짜 하나도 안 놓쳤네.",
+      "failure_feedback": "나머지도 다시 한번 생각해봐."
+    },
+    "hints": [
+      {
+        "text": "하루는 새벽에 경계를 넘는 것으로 시작해서, 밤에 짧은 인사로 끝나."
+      },
+      {
+        "text": "아침엔 물부터 길어야 밥을 지을 수 있었고, 손님은 대문간을 지나 들어와 마당에서 하루를 보내다 갔어."
+      }
+    ]
+  },
+  "clear": {
+    "title": "성읍 생활기록 복원 완료",
+    "body": "처음 여기 들어왔을 땐 그냥 오래된 초가집 몇 채로 보였을지도 몰라.\n\n근데 직접 입구를 보고, 마당을 읽고, 안거리랑 밖거리를 비교하고, 물팡이랑 호령창까지 찾아보니까 — 집이 그냥 건물이 아니란 걸 알게 됐지?\n\n성읍의 집에는 경계를 어떻게 만들었는지, 공간을 어떻게 나눴는지, 가족이 어떻게 살았는지, 물은 어떻게 썼는지, 바깥사람이랑 어떻게 소통했는지가 다 남아 있었어.\n\n네가 복원한 건 집 이름이 아니라, 그 집에서 살았던 방식 그 자체야."
+  }
+}

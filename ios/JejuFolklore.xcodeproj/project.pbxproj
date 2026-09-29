@@ -25,6 +25,7 @@
 		369D553E0685619EEAF02597 /* PixelUIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1903FC08AB7833E41E253682 /* PixelUIColor.swift */; };
 		3C924367BF6D98281ABDEE6F /* PlaceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997538FBFEB00536EF630FCB /* PlaceAPI.swift */; };
 		3F87278B10B282BE0924C3DC /* PlaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2849D430EC6C737EC3D50054 /* PlaceDetailView.swift */; };
+		41314FC7AB44D565BF72F83A /* PlayRunnerClearTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3FB693FB3A879B79124B7E /* PlayRunnerClearTests.swift */; };
 		4376C2AAA8BD0BDF615AB8A6 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = DE6EAC554294F429D6DA6C88 /* OFL.txt */; };
 		4B5F8136E4813312F1CE5976 /* CourseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA846B90A1C7E739C308EE5 /* CourseAPI.swift */; };
 		54D584F75B5C044657405032 /* PixelFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5F583B0BC011D915FE152F /* PixelFont.swift */; };
@@ -36,6 +37,7 @@
 		67157E9A54F763785AB8AAE4 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB19D914698888F9F31CB4C /* Config.swift */; };
 		6993D4B38E663044C3335FF3 /* PixelChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700D4CE53167A5AD8EBB8340 /* PixelChrome.swift */; };
 		6D5F8CF07FD03DF0A2306308 /* PlayPinMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B862C5DD38A16E14785379 /* PlayPinMap.swift */; };
+		7117616A542B6F4AC2EF1D5F /* seongeup.json in Resources */ = {isa = PBXBuildFile; fileRef = 6031A0DDB0E7A707D14273C7 /* seongeup.json */; };
 		724570403E04D82E56626B33 /* MissionReportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBF4D19B73D91571B6BF2CC /* MissionReportSheet.swift */; };
 		72807356FA10C0EE8D9EC901 /* Galmuri14.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 680EEF39BE20B00165C19DAA /* Galmuri14.ttf */; };
 		7485325AAD31ADF859E86B09 /* GoogleMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 73D434DC7C36590FAF11FE46 /* GoogleMaps */; };
@@ -70,12 +72,23 @@
 		FB5B56BEEBB0650A986C18EC /* PlayDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F59CC64DB30B5F69512C4E /* PlayDetailView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		01EF8E9C3F6C315902CB527D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6C28E17D1C1CDB465148AC78 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 58E5457657C3C958743B0C25;
+			remoteInfo = JejuFolklore;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0DBF4D19B73D91571B6BF2CC /* MissionReportSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionReportSheet.swift; sourceTree = "<group>"; };
 		147E26AF7E61D093C74F6104 /* PixelTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelTabBar.swift; sourceTree = "<group>"; };
 		161AAD315E57D0DCD4AEF673 /* CoursePreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursePreviewViewModel.swift; sourceTree = "<group>"; };
 		1903FC08AB7833E41E253682 /* PixelUIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelUIColor.swift; sourceTree = "<group>"; };
 		1D8AB8D49C66B553084056EF /* PixelComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelComponents.swift; sourceTree = "<group>"; };
+		1F3FB693FB3A879B79124B7E /* PlayRunnerClearTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayRunnerClearTests.swift; sourceTree = "<group>"; };
 		2849D430EC6C737EC3D50054 /* PlaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailView.swift; sourceTree = "<group>"; };
 		30363681E0458D5424F54A31 /* MissionStepInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionStepInput.swift; sourceTree = "<group>"; };
 		34B9D496ABD9AFEFF77B6B63 /* CourseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseListView.swift; sourceTree = "<group>"; };
@@ -89,6 +102,7 @@
 		56510A2D59EB508CE47BE90F /* JejuRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JejuRegion.swift; sourceTree = "<group>"; };
 		58575F513772C542278732E4 /* MapTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTabView.swift; sourceTree = "<group>"; };
 		5BFC0010E988BDABFC32500E /* PixelGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelGalleryView.swift; sourceTree = "<group>"; };
+		6031A0DDB0E7A707D14273C7 /* seongeup.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = seongeup.json; sourceTree = "<group>"; };
 		63D6797DC3296F2174D2169A /* PixelColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelColor.swift; sourceTree = "<group>"; };
 		680EEF39BE20B00165C19DAA /* Galmuri14.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Galmuri14.ttf; sourceTree = "<group>"; };
 		68F89AFFDE8A57B6CA8E1D40 /* PlayCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayCard.swift; sourceTree = "<group>"; };
@@ -131,6 +145,7 @@
 		EB5F583B0BC011D915FE152F /* PixelFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelFont.swift; sourceTree = "<group>"; };
 		EBC7164D2D582E9B1C26D3E8 /* MyCourseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCourseListView.swift; sourceTree = "<group>"; };
 		F360898F00360C7F075BAB6C /* StoryAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryAudioPlayer.swift; sourceTree = "<group>"; };
+		F5CB557CE0E1A90340AE07DB /* JejuFolkloreTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = JejuFolkloreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F710DAFC1FB6A28109BE7C66 /* CourseHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseHubView.swift; sourceTree = "<group>"; };
 		FB383F822D48F10D4C482C1B /* PixelIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelIcon.swift; sourceTree = "<group>"; };
 		FE1015A20E1B4F561042D346 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -152,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				4A6CDC61CF4A2F9B4C4E04B0 /* JejuFolklore.app */,
+				F5CB557CE0E1A90340AE07DB /* JejuFolkloreTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -178,6 +194,15 @@
 				8E81A390764D24D99F14B2DA /* SavedCourse.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		393C2F106FB767ABF6061FB6 /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				6031A0DDB0E7A707D14273C7 /* seongeup.json */,
+			);
+			name = Fixtures;
+			path = JejuFolkloreTests/Fixtures;
 			sourceTree = "<group>";
 		};
 		4382E2DB714C38841ADF16F6 /* Covers */ = {
@@ -230,8 +255,10 @@
 			isa = PBXGroup;
 			children = (
 				4382E2DB714C38841ADF16F6 /* Covers */,
+				393C2F106FB767ABF6061FB6 /* Fixtures */,
 				66AB70CD712AA77DD4300D3D /* Fonts */,
 				F76BEBAB352F3DCCB021C0F7 /* JejuFolklore */,
+				D8F7229102C1957ECD0E4BA1 /* JejuFolkloreTests */,
 				9FF2A0088192C74D186B9AF2 /* Resources */,
 				DAB3CC0431095E8DCD0B7724 /* Sources */,
 				008A9C8980608A8515E098EF /* Products */,
@@ -304,6 +331,14 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		D8F7229102C1957ECD0E4BA1 /* JejuFolkloreTests */ = {
+			isa = PBXGroup;
+			children = (
+				1F3FB693FB3A879B79124B7E /* PlayRunnerClearTests.swift */,
+			);
+			path = JejuFolkloreTests;
+			sourceTree = "<group>";
+		};
 		DAB3CC0431095E8DCD0B7724 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -328,6 +363,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		529E839E3ECD93B33452DC22 /* JejuFolkloreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1B2883C4525681B1D9B104C2 /* Build configuration list for PBXNativeTarget "JejuFolkloreTests" */;
+			buildPhases = (
+				48DB5F6241829E64776539DC /* Sources */,
+				17DC127FE7B81405E498DB22 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A1AC3040AEC526A94EBA4320 /* PBXTargetDependency */,
+			);
+			name = JejuFolkloreTests;
+			packageProductDependencies = (
+			);
+			productName = JejuFolkloreTests;
+			productReference = F5CB557CE0E1A90340AE07DB /* JejuFolkloreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		58E5457657C3C958743B0C25 /* JejuFolklore */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 83032AAC9CEDC7FAAADB0C24 /* Build configuration list for PBXNativeTarget "JejuFolklore" */;
@@ -357,6 +411,10 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
+					529E839E3ECD93B33452DC22 = {
+						DevelopmentTeam = HB2ZHR35Y4;
+						ProvisioningStyle = Automatic;
+					};
 					58E5457657C3C958743B0C25 = {
 						DevelopmentTeam = HB2ZHR35Y4;
 						ProvisioningStyle = Automatic;
@@ -381,11 +439,20 @@
 			projectRoot = "";
 			targets = (
 				58E5457657C3C958743B0C25 /* JejuFolklore */,
+				529E839E3ECD93B33452DC22 /* JejuFolkloreTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		17DC127FE7B81405E498DB22 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7117616A542B6F4AC2EF1D5F /* seongeup.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D0D4D4D316502368F59F3746 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -407,6 +474,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		48DB5F6241829E64776539DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41314FC7AB44D565BF72F83A /* PlayRunnerClearTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D50DE94A51AF6A56E6264984 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -464,6 +539,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A1AC3040AEC526A94EBA4320 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 58E5457657C3C958743B0C25 /* JejuFolklore */;
+			targetProxy = 01EF8E9C3F6C315902CB527D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0E022E3BB2C87CC440067257 /* Release */ = {
@@ -553,6 +636,46 @@
 			};
 			name = Debug;
 		};
+		1F5A8E56370F346B2C5F5A18 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = HB2ZHR35Y4;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.keepdev.nolmeongbopseo.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JejuFolklore.app/JejuFolklore";
+			};
+			name = Debug;
+		};
+		6DA13C53F9D6EED981FF170C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = HB2ZHR35Y4;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.keepdev.nolmeongbopseo.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JejuFolklore.app/JejuFolklore";
+			};
+			name = Release;
+		};
 		6E2A1776790A7031DA82FFA2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6A4C37778C65DA1DF7951735 /* Secrets.xcconfig */;
@@ -636,6 +759,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1B2883C4525681B1D9B104C2 /* Build configuration list for PBXNativeTarget "JejuFolkloreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1F5A8E56370F346B2C5F5A18 /* Debug */,
+				6DA13C53F9D6EED981FF170C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		695326EA143816F89BEC379B /* Build configuration list for PBXProject "JejuFolklore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

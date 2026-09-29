@@ -53,7 +53,7 @@ def resolve_line(play, line: str) -> str:
         mission:<mission_id>:<step>   미션 — 첫 Step 은 mission.prompt + 빈 줄 + step.prompt
         feedback:<mission_id>:<step>  정답 뒤 한마디 — step.success_feedback
         discovery:<mission_id>        발견 — mission.discovery.body
-        story:<story_id>              이야기 — story.script (FINAL 뒤 이야기 포함)
+        story:<story_id>              이야기 — story.script
         final                         마지막 과제 — final.prompt
         clear                         완주 — clear.body
 
@@ -96,10 +96,7 @@ def resolve_line(play, line: str) -> str:
         m = mission_of(parts[1])
         text = m.discovery.body if m.discovery else ""
     elif kind == "story" and len(parts) == 2:
-        stories = list(play.stories)
-        if play.final is not None and play.final.story is not None:
-            stories.append(play.final.story)
-        st = next((x for x in stories if x.id == parts[1]), None)
+        st = next((x for x in play.stories if x.id == parts[1]), None)
         if st is None:
             raise ValueError("그런 이야기가 없습니다")
         text = st.script

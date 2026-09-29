@@ -37,8 +37,6 @@ def line_keys(play) -> list[str]:
     keys += [f"story:{s.id}" for s in play.stories]
     if play.final:
         keys.append("final")
-        if play.final.story:
-            keys.append(f"story:{play.final.story.id}")
     if play.clear and play.clear.body:
         keys.append("clear")
     return keys

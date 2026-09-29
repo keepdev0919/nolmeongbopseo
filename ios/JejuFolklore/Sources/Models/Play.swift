@@ -196,7 +196,8 @@ struct FinalStage: Decodable, Equatable {
     let title: String
     let prompt: String
     let step: MissionStep
-    let story: PlayStory?
+    // FINAL 뒤에 이야기를 끼우지 않는다 (2026-09-29 결정). FINAL 을 맞히면 바로 CLEAR —
+    // 마무리 글은 `clear.body` 한 곳이 맡는다. 서버 원고도 이 칸을 받지 않는다.
     /// 2026-09-07 추가. FINAL 도 다른 Mission 처럼 힌트 2단계를 갖는다 —
     /// 「막히면 갇히지 않는다」가 FINAL 에는 빠져 있었다.
     let hints: [MissionHint]

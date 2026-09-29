@@ -345,7 +345,6 @@ struct PlayRunnerView: View {
         }
         if let final = play.final {
             order.append("final")
-            if let story = final.story { order.append("story:\(story.id)") }
         }
         if play.clear?.body.isEmpty == false { order.append("clear") }
         return order
@@ -965,25 +964,15 @@ final class RunnerViewModel: ObservableObject {
             return
         }
         wrongMessage = nil
-        if let story = final.story {
-            pendingStory = story
-            phase = .story
-            return
-        }
         finish()
     }
 
     #if DEBUG
     /// 개발 중 확인용 — 순서를 맞힌 것으로 치고 그대로 진행한다.
-    /// 정답 경로와 **같은 길**을 탄다(이야기가 있으면 이야기부터). 그래야
-    /// 이 버튼으로 넘어간 뒤에 보는 화면이 실제와 같다.
+    /// 정답 경로와 **같은 길**(바로 CLEAR)을 탄다. 그래야 이 버튼으로 넘어간 뒤에
+    /// 보는 화면이 실제와 같다.
     func debugPassFinal() {
         wrongMessage = nil
-        if let story = play.final?.story {
-            pendingStory = story
-            phase = .story
-            return
-        }
         finish()
     }
     #endif

@@ -43,7 +43,7 @@ logger = logging.getLogger(__name__)
 
 QUIET_GAP_SEC = 30 * 60
 
-# Railway 가 넣어 주는 환경 이름 → 어느 앱의 서버인지
+# Railway 가 넣어 주는 환경 이름 → 어느 앱의 서버인지. 모든 알림 맨 앞에 [앱스토어]/[토스] 로 붙는다
 ENV_LABEL = {"production": "앱스토어", "apps-in-toss": "토스"}
 
 # 앱이 부르는 주소. 이 밖의 요청(헬스체크·처리방침·봇의 아무 주소)은 방문으로 세지 않는다.
@@ -122,12 +122,13 @@ def observe(method: str, path: str, query: str, now: float | None = None) -> Non
         with _lock:
             if _last_request_at is None or now - _last_request_at >= QUIET_GAP_SEC:
                 _notified.clear()
-                lines.append(f"👀 누군가 앱을 쓰기 시작했어요 · {where}")
+                lines.append("👀 누군가 앱을 쓰기 시작했어요")
             _last_request_at = now
             if event and event[0] not in _notified:
                 _notified.add(event[0])
                 lines.append(event[1])
         if lines:
-            send_capped("\n".join(lines))
+            # 두 서버가 같은 봇으로 보낸다 — 어느 앱인지 모든 알림 맨 앞에 붙인다 (2026-09-29)
+            send_capped(f"[{where}] " + "\n".join(lines))
     except Exception:  # noqa: BLE001 — 알림 때문에 서버가 깨지면 안 된다
         logger.exception("[VisitNotify] 알림을 만들지 못했습니다 (서비스에는 영향 없음)")
